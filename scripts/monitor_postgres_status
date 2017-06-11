@@ -1,0 +1,25 @@
+#!/bin/bash
+
+READYFILE=$STATUS_VOLUME_PATH/postgres_osm.is_ready
+
+while : 
+do 
+	if pg_isready -h $PGOSM_CONTAINER_ALIAS -p $POSTGRES_TCP_PORT -U $POSTGRES_USER -d $POSTGRES_DB
+	then
+		if [[ ! -f $READYFILE ]]
+		then
+			echo "Postgres is ready..."
+			touch $READYFILE
+		fi
+		sleep $POSTGRES_UP_POLL_INTERVAL
+	else
+		if [[ -f $READYFILE ]]
+		then
+			rm $READYFILE
+			echo "Postgres went down..."
+		else
+			echo "Postgres is down..."
+		fi
+		sleep $POSTGRES_DOWN_POLL_INTERVAL
+	fi
+done
