@@ -1,10 +1,10 @@
 #!/bin/bash
 
-READYFILE=$STATUS_VOLUME_PATH/postgres_osm.is_ready
+READYFILE=$STATUS_VOLUME_PATH/postgres.is_ready
 
 while : 
 do 
-	if pg_isready -h $PGOSM_CONTAINER_ALIAS -p $POSTGRES_TCP_PORT -U $POSTGRES_USER -d $POSTGRES_DB
+	if pg_isready -h $POSTGRES_CONTAINER_ALIAS -p $POSTGRES_TCP_PORT -U $POSTGRES_USER -d $POSTGRES_DB
 	then
 		if [[ ! -f $READYFILE ]]
 		then
