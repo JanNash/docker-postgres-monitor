@@ -2,6 +2,8 @@
 
 READYFILE=$STATUS_VOLUME_PATH/postgres.is_ready
 
+trap "echo 'Received SIGTERM, exiting.'; exit 0;" SIGTERM
+
 while : 
 do 
 	if pg_isready -h $POSTGRES_CONTAINER_ALIAS -p $POSTGRES_TCP_PORT -U $POSTGRES_USER -d $POSTGRES_DB
