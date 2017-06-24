@@ -10,6 +10,9 @@ MAINTAINER Jan Nash <jnash@jnash.de>
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ARG STATUS_VOLUME_PATH
+
+COPY ./content/wait_for_postgres "${STATUS_VOLUME_PATH}"
 COPY ./scripts/monitor_postgres_status /usr/local/bin/
 RUN chmod +x /usr/local/bin/monitor_postgres_status
 
