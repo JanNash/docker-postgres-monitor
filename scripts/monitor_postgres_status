@@ -1,27 +1,50 @@
 #!/bin/bash
 
-READYFILE=$STATUS_VOLUME_PATH/postgres.is_ready
+# Mandatory environment variables
+: "${STATUS_VOLUME_PATH:?STATUS_VOLUME_PATH needs to be set and non-empty.}"
+: "${POSTGRES_CONTAINER_ALIAS:?POSTGRES_CONTAINER_ALIAS needs to be set and non-empty.}"
+: "${POSTGRES_USER:?POSTGRES_USER needs to be set and non-empty.}"
+: "${POSTGRES_DB:?POSTGRES_DB needs to be set and non-empty.}"
+
+# Environment variables with default values
+if [[ -z "${POSTGRES_TCP_PORT}" ]]; then
+    echo "POSTGRES_TCP_PORT unset or zero, defaulting to '5432'"
+    POSTGRES_TCP_PORT=5432
+fi
+
+if [[ -z "${POSTGRES_UP_POLL_INTERVAL}" ]]; then
+    echo "POSTGRES_UP_POLL_INTERVAL unset or zero, defaulting to '60' (seconds)"
+    POSTGRES_UP_POLL_INTERVAL=60
+fi
+
+if [[ -z "${POSTGRES_DOWN_POLL_INTERVAL}" ]]; then
+    echo "POSTGRES_DOWN_POLL_INTERVAL unset or zero, defaulting to '1' (second)"
+    POSTGRES_DOWN_POLL_INTERVAL=1
+fi
+
+
+READYFILE="${STATUS_VOLUME_PATH}"/postgres.is_ready
 
 trap "echo 'Received SIGTERM, exiting.'; exit 0;" SIGTERM
 
 while : 
 do 
-	if pg_isready -h $POSTGRES_CONTAINER_ALIAS -p $POSTGRES_TCP_PORT -U $POSTGRES_USER -d $POSTGRES_DB
-	then
-		if [[ ! -f $READYFILE ]]
-		then
-			echo "Postgres is ready..."
-			touch $READYFILE
-		fi
-		sleep $POSTGRES_UP_POLL_INTERVAL
-	else
-		if [[ -f $READYFILE ]]
-		then
-			rm $READYFILE
-			echo "Postgres went down..."
-		else
-			echo "Postgres is down..."
-		fi
-		sleep $POSTGRES_DOWN_POLL_INTERVAL
-	fi
+    if pg_isready -h "${POSTGRES_CONTAINER_ALIAS}" -p "${POSTGRES_TCP_PORT}" -U "${POSTGRES_USER}" -d "${POSTGRES_DB}"
+    then
+        if [[ ! -f "${READYFILE}" ]]
+        then
+            echo "Postgres is ready..."
+            touch "${READYFILE}"
+        fi
+        sleep "${POSTGRES_UP_POLL_INTERVAL}"
+    else
+        if [[ -f "${READYFILE}" ]]
+        then
+            rm "${READYFILE}"
+            echo "Postgres went down..."
+        else
+            echo "Postgres is down..."
+        fi
+        sleep "${POSTGRES_DOWN_POLL_INTERVAL}"
+    fi
 done
