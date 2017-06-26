@@ -12,6 +12,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ARG WAIT_FOR_VOLUME_PATH
 
+RUN mkdir -p "${WAIT_FOR_VOLUME_PATH}"
 COPY ./content/postgres "${WAIT_FOR_VOLUME_PATH}"
 COPY ./scripts/monitor_postgres_status /usr/local/bin/
 RUN chmod +x \
