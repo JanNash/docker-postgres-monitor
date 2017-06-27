@@ -32,6 +32,7 @@ READYFILE="${STATUS_VOLUME_PATH}"/postgres.is_ready
 
 trap "echo 'Received SIGTERM, exiting.'; exit 0;" SIGTERM
 trap "echo 'Received SIGQUIT, exiting.'; exit 0;" SIGQUIT
+trap "echo 'Received SIGINT, exiting.'; exit 0;" SIGINT
 
 while : 
 do 
