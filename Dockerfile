@@ -9,7 +9,22 @@ ENV DEBIAN_FRONTEND noninteractive
 ARG WAIT_FOR_VOLUME_PATH
 ARG POSTGRES_VERSION
 
-RUN mkdir -p "${WAIT_FOR_VOLUME_PATH}"
+RUN \
+# Package installations
+&&  apt-get update \
+&&  apt-get install -y --no-install-recommends \
+        "postgresql-client-${POSTGRES_VERSION}" \
+
+# Cleanup
+&&  apt-get clean \
+&&  rm -rf \
+        /var/lib/apt/lists/* \
+        /var/tmp/* \
+        /tmp/* \
+
+# Create wait_for-volume directory
+&& mkdir -p "${WAIT_FOR_VOLUME_PATH}"
+
 COPY ./content/postgres "${WAIT_FOR_VOLUME_PATH}"
 COPY ./scripts/monitor_postgres_status /usr/local/bin/
 RUN chmod +x \
