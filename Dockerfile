@@ -1,7 +1,7 @@
 # DOCKER-VERSION 17.03.1-ce
 # VERSION 0.3.0
 
-FROM postgres:9.6.3
+FROM debian:stretch-slim
 MAINTAINER Jan Nash <jnash@jnash.de>
 
 ENV DEBIAN_FRONTEND noninteractive
