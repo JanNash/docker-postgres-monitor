@@ -22,6 +22,11 @@ if [[ -z "${POSTGRES_DOWN_POLL_INTERVAL}" ]]; then
     POSTGRES_DOWN_POLL_INTERVAL=1
 fi
 
+if [[ -n "${@}" ]]; then
+    exec "${@}"
+    exit "${?}"
+fi
+
 
 READYFILE="${STATUS_VOLUME_PATH}"/postgres.is_ready
 
