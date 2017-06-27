@@ -7,6 +7,7 @@ MAINTAINER Jan Nash <jnash@jnash.de>
 ENV DEBIAN_FRONTEND noninteractive
 
 ARG WAIT_FOR_VOLUME_PATH
+ARG POSTGRES_VERSION
 
 RUN mkdir -p "${WAIT_FOR_VOLUME_PATH}"
 COPY ./content/postgres "${WAIT_FOR_VOLUME_PATH}"
