@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Mandatory environment variables
-: "${STATUS_VOLUME_PATH:?STATUS_VOLUME_PATH needs to be set and non-empty.}"
+: "${WAIT_FOR_VOLUME_PATH:?WAIT_FOR_VOLUME_PATH needs to be set and non-empty.}"
 : "${POSTGRES_CONTAINER_ALIAS:?POSTGRES_CONTAINER_ALIAS needs to be set and non-empty.}"
 : "${POSTGRES_USER:?POSTGRES_USER needs to be set and non-empty.}"
 : "${POSTGRES_DB:?POSTGRES_DB needs to be set and non-empty.}"
@@ -28,7 +28,7 @@ if [[ -n "${@}" ]]; then
 fi
 
 
-READYFILE="${STATUS_VOLUME_PATH}"/postgres.is_ready
+READYFILE="${WAIT_FOR_VOLUME_PATH}/postgres.is_ready"
 
 trap "echo 'Received SIGTERM, exiting.'; exit 0;" SIGTERM
 trap "echo 'Received SIGQUIT, exiting.'; exit 0;" SIGQUIT
