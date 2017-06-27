@@ -10,6 +10,12 @@ ARG WAIT_FOR_VOLUME_PATH
 ARG POSTGRES_VERSION
 
 RUN \
+# This hack is necessary, so "postgresql-client-${POSTGRES_VERSION}"
+# can add the symlink to its man page and doesn't fail installing.
+    mkdir -p \
+        /usr/share/man/man1 \
+        /usr/share/man/man7 \
+
 # Package installations
 &&  apt-get update \
 &&  apt-get install -y --no-install-recommends \
