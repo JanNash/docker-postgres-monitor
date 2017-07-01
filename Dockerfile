@@ -1,4 +1,4 @@
-# DOCKER-VERSION 17.03.1-ce
+# DOCKER-VERSION 17.06.0-ce
 # VERSION 0.3.0
 
 FROM debian:stretch-slim
