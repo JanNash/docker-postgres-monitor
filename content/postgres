@@ -1,8 +1,6 @@
 #!/bin/bash
 
-: "${STATUS_VOLUME_PATH:?STATUS_VOLUME_PATH needs to be set and non-empty.}"
-
-until [[ -f "${STATUS_VOLUME_PATH}/postgres.is_ready" ]]
+until [[ -f "postgres.is_ready" ]]
 do
     echo "Waiting for postgres.."
     sleep 5
