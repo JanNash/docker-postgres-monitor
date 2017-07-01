@@ -10,9 +10,14 @@ ARG WAIT_FOR_VOLUME_PATH
 ARG POSTGRES_VERSION
 
 RUN \
+# Check for mandatory build-arguments
+    MISSING_ARG_MSG="Build argument needs to be set and non-empty." \
+&&  : "${WAIT_FOR_VOLUME_PATH:?${MISSING_ARG_MSG}}" \
+&&  : "${POSTGRES_VERSION:?${MISSING_ARG_MSG}}" \
+
 # This hack is necessary, so "postgresql-client-${POSTGRES_VERSION}"
 # can add the symlink to its man page and doesn't fail installing.
-    mkdir -p \
+&&  mkdir -p \
         /usr/share/man/man1 \
         /usr/share/man/man7 \
 
