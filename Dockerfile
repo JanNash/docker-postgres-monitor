@@ -6,13 +6,13 @@ MAINTAINER Jan Nash <jnash@jnash.de>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ARG WAIT_FOR_VOLUME_PATH
+ARG STATUS_VOLUME_PATH
 ARG POSTGRES_VERSION
 
 RUN \
 # Check for mandatory build-arguments
     MISSING_ARG_MSG="Build argument needs to be set and non-empty." \
-&&  : "${WAIT_FOR_VOLUME_PATH:?${MISSING_ARG_MSG}}" \
+&&  : "${STATUS_VOLUME_PATH:?${MISSING_ARG_MSG}}" \
 &&  : "${POSTGRES_VERSION:?${MISSING_ARG_MSG}}" \
 
 # This hack is necessary, so "postgresql-client-${POSTGRES_VERSION}"
@@ -34,12 +34,12 @@ RUN \
         /tmp/* \
 
 # Create wait_for-volume directory
-&& mkdir -p "${WAIT_FOR_VOLUME_PATH}"
+&& mkdir -p "${STATUS_VOLUME_PATH}"
 
-COPY ./content/postgres "${WAIT_FOR_VOLUME_PATH}"
+COPY ./content/postgres "${STATUS_VOLUME_PATH}"
 COPY ./scripts/monitor_postgres_status /usr/local/bin/
 RUN chmod +x \
-        "${WAIT_FOR_VOLUME_PATH}"/postgres \
+        "${STATUS_VOLUME_PATH}"/postgres \
         /usr/local/bin/monitor_postgres_status
 
 ENTRYPOINT ["monitor_postgres_status"]
