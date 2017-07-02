@@ -36,10 +36,10 @@ RUN \
 # Create wait_for-volume directory
 && mkdir -p "${STATUS_VOLUME_PATH}"
 
-COPY ./content/postgres "${STATUS_VOLUME_PATH}"
+COPY ./content/wait_for_postgres "${STATUS_VOLUME_PATH}"
 COPY ./scripts/monitor_postgres_status /usr/local/bin/
 RUN chmod +x \
-        "${STATUS_VOLUME_PATH}"/postgres \
+        "${STATUS_VOLUME_PATH}"/wait_for_postgres \
         /usr/local/bin/monitor_postgres_status
 
 ENTRYPOINT ["monitor_postgres_status"]
