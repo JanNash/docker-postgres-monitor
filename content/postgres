@@ -1,5 +1,12 @@
 #!/bin/bash
 
+set -o errexit
+set -o pipefail
+set -o nounset
+
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${__dir}"
+
 until [[ -f "postgres.is_ready" ]]
 do
     echo "Waiting for postgres.."
