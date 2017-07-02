@@ -1,5 +1,5 @@
 # DOCKER-VERSION 17.06.0-ce
-# VERSION 0.4.0
+# VERSION 0.4.1
 
 FROM debian:stretch-slim
 MAINTAINER Jan Nash <jnash@jnash.de>
